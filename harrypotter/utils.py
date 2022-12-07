@@ -13,7 +13,7 @@ def potter_similar_face_finder(faces,my_face):
         for filename in os.listdir(faces):
             # print(filename)
             celebrety_names.append(filename)
-            img=face_recognition.load_image_file("faces/"+filename)
+            img=face_recognition.load_image_file(faces+filename)
             if img is not None:
                 img_database.append(img)
     load_images_from_folder(faces)
