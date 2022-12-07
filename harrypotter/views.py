@@ -10,7 +10,10 @@ from PIL import Image
 import io
 import base64
 import numpy as np
-
+import os
+current_path = os.path.dirname(__file__)
+# image_folder = os.path.join(current_path, images)
+POTTER_FOLDER =  os.path.join(current_path, 'harrypotter/potter-faces')
 
 @api_view(('POST',))
 def Potter_face_match(request):
