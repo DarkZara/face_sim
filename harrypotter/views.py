@@ -13,7 +13,7 @@ import numpy as np
 import os
 current_path = os.path.dirname(__file__)
 # image_folder = os.path.join(current_path, images)
-POTTER_FOLDER =  os.path.join(current_path, 'potter-faces/')
+POTTER_FOLDER =  os.path.join(current_path, 'potterfaces/')
 
 @api_view(('POST',))
 def Potter_face_match(request):
