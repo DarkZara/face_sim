@@ -23,7 +23,7 @@ def Potter_face_match(request):
         np_data=np.fromstring(decod,np.uint8)
         face_img=cv2.imdecode(np_data,cv2.IMREAD_UNCHANGED)
         # face_img = cv2.cvtColor(face_img, cv2.COLOR_BGR2GRAY)
-        (raw_img,names,percentages)=potter_similar_face_finder('potterfaces',face_img)
+        (raw_img,names,percentages)=potter_similar_face_finder(POTTER_FOLDER,face_img)
         pil = Image.fromarray(raw_img)
         buff=io.BytesIO()
         pil.save(buff,format='PNG')
