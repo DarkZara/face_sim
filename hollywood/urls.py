@@ -18,5 +18,6 @@ from django.urls import path,include
 from harrypotter import views as vpotter
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/potter/',vpotter.Potter_face_match)
+    path('api/potter/',vpotter.Potter_face_match),
+    path('api/match/',vpotter.face_match)
 ]
