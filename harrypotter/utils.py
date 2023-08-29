@@ -10,7 +10,8 @@ def face_find_match(img):
         
 def face_find_match(list_of_embeddings,main_embedding):
     results = {}
-    for embedding in list_of_embeddings:
+    for ekey in list(list_of_embeddings.keys()):
+        embedding = list_of_embeddings[ekey]
         # result = DeepFace.verify(embedding['embedding'], main_embedding,enforce_detection=False)
         result=deepface.commons.distance.findCosineDistance(embedding['embedding'], main_embedding)
         results[{"value":1 - result,"url":embedding['embedding'],"name":embedding['name']}]

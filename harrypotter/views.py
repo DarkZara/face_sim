@@ -11,6 +11,7 @@ import io
 import base64
 import numpy as np
 import os
+import pickle
 current_path = os.path.dirname(__file__)
 # image_folder = os.path.join(current_path, images)
 POTTER_FOLDER =  os.path.join(current_path, 'potterfaces/')
@@ -42,7 +43,7 @@ def Potter_face_match(request):
     #     return Response(response_data)
   
 pickle_addres={
-    "HP":""
+    "HP":"data_sets/hp.pickle"
 }
 
 @api_view(('POST',))
@@ -54,7 +55,26 @@ def face_match(request):
         decod=base64.b64decode(coded)
         np_data=np.fromstring(decod,np.uint8)
         face_img=cv2.imdecode(np_data,cv2.IMREAD_UNCHANGED)
-
+        face_embedding=None
+        try:
+            face_embedding = DeepFace.represent(face_img, model_name="VGG-Face")
+        except:
+            return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
+        
+        with open(pickle_addres["app"], 'rb') as handle:
+            b = pickle.load(handle)
+        
+        top3 = face_find_match(b,face_embedding[0]["embedding"])
+        return Response({"status":200,
+                         "one_name":top3[0]['name'],
+                         "one_acc":top3[0]['value'],
+                         "one_url":top3[0]['url'],
+                         "two_name":top3[1]['name'],
+                         "two_acc":top3[1]['value'],
+                         "two_url":top3[1]['url'],
+                         "three_name":top3[2]['name'],
+                         "three_acc":top3[2]['value'],
+                         "three_url":top3[2]['url'],})
         #use app to get pickle adds
         #use hash to make sure itcomes from app
         
@@ -62,17 +82,17 @@ def face_match(request):
 
 
         
-        (raw_img,names,percentages)=potter_similar_face_finder(POTTER_FOLDER,face_img)
-        pil = Image.fromarray(raw_img)
-        buff=io.BytesIO()
-        pil.save(buff,format='PNG')
-        img_str=base64.b64encode(buff.getvalue())
-        encoded_result = ''+str(img_str)
-        response_data = {}
-        response_data['image'] = encoded_result
-        response_data['main_name'] = names[0]
-        response_data['main_percent'] = percentages[0]
-        response_data['names'] = names
-        response_data['percentages'] = percentages
-        return Response(response_data)
+        # (raw_img,names,percentages)=potter_similar_face_finder(POTTER_FOLDER,face_img)
+        # pil = Image.fromarray(raw_img)
+        # buff=io.BytesIO()
+        # pil.save(buff,format='PNG')
+        # img_str=base64.b64encode(buff.getvalue())
+        # encoded_result = ''+str(img_str)
+        # response_data = {}
+        # response_data['image'] = encoded_result
+        # response_data['main_name'] = names[0]
+        # response_data['main_percent'] = percentages[0]
+        # response_data['names'] = names
+        # response_data['percentages'] = percentages
+        # return Response(response_data)
   
