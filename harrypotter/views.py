@@ -43,7 +43,7 @@ def Potter_face_match(request):
     #     return Response(response_data)
   
 pickle_addres={
-    "HP":"data_sets/hp.pickle"
+    "HP":"/data_sets/hp.pickle"
 }
 
 @api_view(('POST',))
@@ -51,7 +51,7 @@ def face_match(request,pickle_addres=pickle_addres):
     if request.method == 'POST':
         coded = request.data["encoded"]
         hash = request.data["hash"]
-        app = str(request.data["app"])
+        app = request.data["app"]
         # print("app",app,"\n\n",coded)
         header, data = coded.split(',', 1)
         image_data = base64.b64decode(data)
@@ -69,7 +69,7 @@ def face_match(request,pickle_addres=pickle_addres):
         face_embedding = DeepFace.represent(face_img, model_name="VGG-Face")
         # except:
         #     return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
-        print(pickle_addres)
+        
         print(pickle_addres[app])
         with open(pickle_addres[app], 'rb') as handle:
             b = pickle.load(handle)
