@@ -52,6 +52,7 @@ def face_match(request):
         coded = request.data["encoded"]
         hash = request.data["hash"]
         app = request.data["app"]
+        print("app",app,"\n\n",coded)
         decod=base64.b64decode(coded)
         np_data=np.fromstring(decod,np.uint8)
         face_img=cv2.imdecode(np_data,cv2.IMREAD_UNCHANGED)
@@ -65,6 +66,7 @@ def face_match(request):
             b = pickle.load(handle)
         
         top3 = face_find_match(b,face_embedding[0]["embedding"])
+        print("\n\n\n",top3)
         return Response({"status":200,
                          "one_name":top3[0]['name'],
                          "one_acc":top3[0]['value'],
