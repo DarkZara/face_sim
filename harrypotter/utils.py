@@ -14,7 +14,9 @@ def face_find_match(list_of_embeddings,main_embedding):
         embedding = list_of_embeddings[ekey]
         # result = DeepFace.verify(embedding['embedding'], main_embedding,enforce_detection=False)
         result=deepface.commons.distance.findCosineDistance(embedding['embedding'], main_embedding)
-        results[{"value":1 - result,"url":embedding['embedding'],"name":embedding['name']}]
+        results.append({"value":1 - result,
+                 "url":embedding['embedding'],
+                 "name":embedding['name']})
     sorted_results = sorted(results, key=itemgetter('value'),reverse=True) 
     return sorted_results[:3]
     
