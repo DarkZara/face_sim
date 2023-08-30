@@ -53,14 +53,18 @@ def face_match(request):
         hash = request.data["hash"]
         app = request.data["app"]
         # print("app",app,"\n\n",coded)
-        decod=base64.b64decode(coded)
-        np_data=np.fromstring(decod,np.uint8)
-        face_img=cv2.imdecode(np_data,cv2.IMREAD_UNCHANGED)
+        header, data = coded.split(',', 1)
+        image_data = base64.b64decode(data)
+        np_array = np.frombuffer(image_data, np.uint8)
+        face_img = cv2.imdecode(np_array, cv2.IMREAD_UNCHANGED)
+        # decod=base64.b64decode(coded)
+        # np_data=np.fromstring(decod,np.uint8)
+        # face_img=cv2.imdecode(np_data,cv2.IMREAD_UNCHANGED)
         face_embedding=None
-        try:
-            DeepFace.extract_faces(face_img)
-        except:
-             return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
+        # try:
+        DeepFace.extract_faces(face_img)
+        # except:
+        #      return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
         # try:
         face_embedding = DeepFace.represent(face_img, model_name="VGG-Face")
         # except:
