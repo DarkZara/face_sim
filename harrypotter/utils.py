@@ -9,7 +9,7 @@ def face_find_match(img):
         return False
         
 def face_find_match(list_of_embeddings,main_embedding):
-    results = {}
+    results = []
     for ekey in list(list_of_embeddings.keys()):
         embedding = list_of_embeddings[ekey]
         # result = DeepFace.verify(embedding['embedding'], main_embedding,enforce_detection=False)
