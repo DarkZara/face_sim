@@ -71,7 +71,7 @@ def face_match(request,pickle_addres=pickle_addres):
         #     return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
         
         script_dir = os.path.dirname(__file__) 
-        rel_path = pickle_addres[app]
+        rel_path = "data_sets/"+pickle_addres[app]
         abs_file_path = os.path.join(script_dir, rel_path)
         with open(abs_file_path, 'rb') as handle:
             b = pickle.load(handle)
