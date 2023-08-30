@@ -43,7 +43,7 @@ def Potter_face_match(request):
     #     return Response(response_data)
   
 pickle_addres={
-    "HP":"/data_sets/hp.pickle"
+    "HP":"hp.pickle"
 }
 
 @api_view(('POST',))
@@ -70,8 +70,10 @@ def face_match(request,pickle_addres=pickle_addres):
         # except:
         #     return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
         
-        print(pickle_addres[app])
-        with open(pickle_addres[app], 'rb') as handle:
+        script_dir = os.path.dirname(__file__) 
+        rel_path = pickle_addres[app]
+        abs_file_path = os.path.join(script_dir, rel_path)
+        with open(abs_file_path, 'rb') as handle:
             b = pickle.load(handle)
         
         top3 = face_find_match(b,face_embedding[0]["embedding"])
