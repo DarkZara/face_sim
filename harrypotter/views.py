@@ -52,32 +52,22 @@ def face_match(request,pickle_addres=pickle_addres):
         coded = request.data["encoded"]
         hash = request.data["hash"]
         app = request.data["app"]
-        # print("app",app,"\n\n",coded)
         header, data = coded.split(',', 1)
         image_data = base64.b64decode(data)
         np_array = np.frombuffer(image_data, np.uint8)
         face_img = cv2.imdecode(np_array, cv2.IMREAD_UNCHANGED)
-        # decod=base64.b64decode(coded)
-        # np_data=np.fromstring(decod,np.uint8)
-        # face_img=cv2.imdecode(np_data,cv2.IMREAD_UNCHANGED)
         face_embedding=None
-        # try:
-        DeepFace.extract_faces(face_img)
-        # except:
-        #      return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
-        # try:
-        face_embedding = DeepFace.represent(face_img, model_name="VGG-Face")
-        # except:
-        #     return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
+        try:
+            face_embedding = DeepFace.represent(face_img, model_name="VGG-Face")
+        except:
+             return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
         
         script_dir = os.path.dirname(__file__) 
         rel_path = "data_sets/"+pickle_addres[app]
         abs_file_path = os.path.join(script_dir, rel_path)
         with open(abs_file_path, 'rb') as handle:
             b = pickle.load(handle)
-        
         top3 = face_find_match(b,face_embedding[0]["embedding"])
-        print("\n\n\n",top3)
         return Response({"status":200,
                          "one_name":top3[0]['name'],
                          "one_acc":top3[0]['value'],
