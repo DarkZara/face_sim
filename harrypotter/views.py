@@ -69,8 +69,8 @@ def face_match(request):
         face_embedding = DeepFace.represent(face_img, model_name="VGG-Face")
         # except:
         #     return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
-        print(pickle_addres["app"])
-        with open(pickle_addres["app"], 'rb') as handle:
+        print(pickle_addres[app])
+        with open(pickle_addres[app], 'rb') as handle:
             b = pickle.load(handle)
         
         top3 = face_find_match(b,face_embedding[0]["embedding"])
