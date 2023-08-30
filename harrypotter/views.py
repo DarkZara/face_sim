@@ -52,7 +52,7 @@ def face_match(request):
         coded = request.data["encoded"]
         hash = request.data["hash"]
         app = request.data["app"]
-        print("app",app,"\n\n",coded)
+        # print("app",app,"\n\n",coded)
         decod=base64.b64decode(coded)
         np_data=np.fromstring(decod,np.uint8)
         face_img=cv2.imdecode(np_data,cv2.IMREAD_UNCHANGED)
@@ -65,7 +65,7 @@ def face_match(request):
         face_embedding = DeepFace.represent(face_img, model_name="VGG-Face")
         # except:
         #     return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
-        
+        print(pickle_addres["app"])
         with open(pickle_addres["app"], 'rb') as handle:
             b = pickle.load(handle)
         
