@@ -53,9 +53,10 @@ def face_match(request,pickle_addres=pickle_addres):
     authorization_header = request.META.get('HTTP_AUTHORIZATION')
 
     if authorization_header:
-
-        if not str(authorization_header)==config('SECRET_KEY'):
-            return Response({"status":401,"error":"You are not using this inside the correct application!"})
+        if authorization_header.startswith('Bearer '):
+            token = authorization_header.split('Bearer ')[1]
+            if not str(token)==str(config('SECRET_KEY')):
+                return Response({"status":401,"error":"You are not using this inside the correct application!"})
     if request.method == 'POST':
         coded = request.data["encoded"]
 
