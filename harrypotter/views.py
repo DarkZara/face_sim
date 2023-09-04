@@ -12,6 +12,8 @@ import base64
 import numpy as np
 import os
 import pickle
+from django.http import HttpResponse
+from decouple import config
 current_path = os.path.dirname(__file__)
 # image_folder = os.path.join(current_path, images)
 POTTER_FOLDER =  os.path.join(current_path, 'potterfaces/')
@@ -48,9 +50,15 @@ pickle_addres={
 
 @api_view(('POST',))
 def face_match(request,pickle_addres=pickle_addres):
+    authorization_header = request.META.get('HTTP_AUTHORIZATION')
+
+    if authorization_header:
+
+        if not str(authorization_header)==config('SECRET_KEY'):
+            return Response({"status":401,"error":"You are not using this inside the correct application!"})
     if request.method == 'POST':
         coded = request.data["encoded"]
-        hash = request.data["hash"]
+
         app = request.data["app"]
         header, data = coded.split(',', 1)
         image_data = base64.b64decode(data)
