@@ -69,7 +69,8 @@ def face_match(request,pickle_addres=pickle_addres):
         print("here")
         try:
             face_embedding = DeepFace.represent(face_img, model_name="VGG-Face", batch_size=8)
-        except:
+        except Exception as e:
+             print("\n",e,"\n")
              return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
         
         script_dir = os.path.dirname(__file__) 
