@@ -66,8 +66,9 @@ def face_match(request,pickle_addres=pickle_addres):
         np_array = np.frombuffer(image_data, np.uint8)
         face_img = cv2.imdecode(np_array, cv2.IMREAD_UNCHANGED)
         face_embedding=None
+        print("here")
         try:
-            face_embedding = DeepFace.represent(face_img, model_name="VGG-Face")
+            face_embedding = DeepFace.represent(face_img, model_name="VGG-Face", batch_size=8)
         except:
              return Response({"status":403,"error":"Could not detecet a face from your photo, please try another image with better quality."})
         
